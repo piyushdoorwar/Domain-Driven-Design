@@ -11,15 +11,13 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
         // Add services to the container.
 
         builder.Services.AddControllers();
         builder.Services.AddMemoryCache();
         builder.Services.AddSwaggerGen();
-        builder.Services.AddDbContext<LibraryDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LibraryDatabase")));
+        builder.Services.AddDbContext<LibraryDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("LibraryDatabase")));
 
         builder.Services.AddScoped<IBookRepository, EFCoreBookRepository>();
         builder.Services.AddScoped<BorrowBookHandler>();
